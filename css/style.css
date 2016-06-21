@@ -1,0 +1,46 @@
+* {
+    margin:0;
+    padding:0;
+}
+
+body {
+    width:1920px;
+    height:1080px;
+}
+
+a {
+    list-style-type: none;
+}
+
+header {
+    display:block;
+    width: 300px;
+    height:1080px;
+    float:left;
+    background: #313434;
+    clear:both;
+}
+
+h2 {
+    color:lightgray;
+    text-align: center;
+}
+
+.viewer-wrapper{
+    height:1080px;
+    width:1620px;
+    display:flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap:         wrap;
+}
+
+.img-container {
+    height:540px;
+    width:540px;
+    overflow: hidden;
+    position:relative;
+}
+
+.img-container img{
+    position:absolute;
+}
