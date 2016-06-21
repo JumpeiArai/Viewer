@@ -1,7 +1,7 @@
 $(document).ready(function(){
     var imgnamelist;
     var len;
-    var interval = 5000;
+    var interval = 3000;
 
     /**
      * Get request to imglist.php
@@ -13,13 +13,17 @@ $(document).ready(function(){
             var path = "./img/"+imgnamelist[i];
             var tg = $('.img-container img:first-child');
             $(tg[i]).attr('src',path);
+            var non_active = $('.img-container img:last-child');
+            var j = i+len;
+            if( j>imgnamelist.length-1 ){ j = j-imgnamelist.length ;}
+            $(non_active[i]).attr('src',"./img/"+imgnamelist[j]);
         }
         var cl = new CycleLoader(imgnamelist,len);
         setInterval(cl.imgCycle,interval);
     });
 
     /**
-     * Resize and centered
+     * Resize and centered image
      */
     $('.viewer-wrapper img').on('load',function(){
         var nh = this.height;
@@ -39,26 +43,34 @@ $(document).ready(function(){
             $(this).css('left',xz);
         }
     });
+
     /**
-     *  CycleLoader object for iterate path and dom
-     * @param imgnamelist
-     * @param len
+     *  CycleLoader object for iterate file_pointer and dom_pointer
+     * @param imgnamelist - Filename Array
+     * @param len - DOM length
      * @constructor
      */
     var CycleLoader = function(imgnamelist,len){
+
         this.imgnamelist = imgnamelist;
         this.len = imgnamelist.length-1;
         this.file_pointer = 7;
         this.domlen = len;
-        this.dom_pointer = 1;
+        this.dom_pointer = 0;
+        this.fadetime = 1000;
 
-        this.getDOM = function(){
-            var dom = $('.img-container:nth-of-type('+this.dom_pointer+') img');
-            this.dom_pointer += 1;
-            if(this.dom_pointer > this.domlen){
-                this.dom_pointer = 1;
-            }
-            return dom;
+        this.getActiveDOM = function(){
+            var active = $('.img-container img.active');
+            var select = $(active[this.dom_pointer]);
+            console.log(select);
+            return select;
+        }.bind(this);
+
+        this.getNonActiveDOM = function(){
+            var non_active = $('.img-container > img:not(.active)');
+            var select = $(non_active[this.dom_pointer]);
+            console.log(select);
+            return select;
         }.bind(this);
 
         this.getPath = function(){
@@ -71,8 +83,16 @@ $(document).ready(function(){
         }.bind(this);
 
         this.imgCycle = function(){
-            console.log(this);
-            this.getDOM().attr('src',this.getPath()).fadeIn();
+            var self = this;
+            var adom = this.getActiveDOM();
+            var ndom = this.getNonActiveDOM();
+            adom.animate({ 'opacity':0 },self.fadetime,'linear',function(){
+                ndom.addClass('active');
+                $(this).attr('src',self.getPath()).removeClass('active');
+            });
+            ndom.animate({ 'opacity':1.0 },self.fadetime);
+            this.dom_pointer ++;
+            if(this.dom_pointer > this.domlen-1){this.dom_pointer = 0;}
         }.bind(this);
     };
 });
