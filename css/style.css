@@ -44,3 +44,7 @@ h2 {
 .img-container img{
     position:absolute;
 }
+
+.img-container img:last-child {
+    opacity:0;
+}
