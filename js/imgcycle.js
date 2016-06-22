@@ -26,20 +26,22 @@ $(document).ready(function(){
      * Resize and centered image
      */
     $('.viewer-wrapper img').on('load',function(){
-        var nh = this.height;
-        var nw = this.width;
+        var nh = this.naturalHeight;
+        var nw = this.naturalWidth;
         var size = 540;
         if(nh > nw){
             var dx = size/nw;
             var yz = Math.round((size-dx*nh)/2);
             this.width = dx*nw;
             this.height = dx*nh;
+            $(this).css('left',0);
             $(this).css('top',yz);
         }else{
             var dy = size/nh;
             var xz = Math.round((size-dy*nw)/2);
             this.width = dy*nw;
             this.height = dy*nh;
+            $(this).css('top',0);
             $(this).css('left',xz);
         }
     });
