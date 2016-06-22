@@ -28,6 +28,7 @@ header {
 h2 {
     color:lightgray;
     text-align: center;
+    margin-top:20px;
 }
 
 .viewer-wrapper{
