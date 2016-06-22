@@ -107,9 +107,11 @@ $(document).ready(function(){
             timeout:10000,
             success: function(data) {
                 cl.imgnamelist = data;
+                cl.file_pointer = 0;
+                cl.len = data.length;
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
-
+                
             }
         });
     };
