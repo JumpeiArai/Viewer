@@ -2,7 +2,8 @@ $(document).ready(function(){
     var imgnamelist;
     var len;
     var interval = 3000;
-
+    var tmr;
+    var cl;
     /**
      * Get request to imglist.php
      */
@@ -10,16 +11,16 @@ $(document).ready(function(){
         imgnamelist = JSON.parse(data);
         len = $('div.img-container').length;
         for(var i=0;i<len;i++){
-            var path = "./img/"+imgnamelist[i];
+            var path = imgnamelist[i];
             var tg = $('.img-container img:first-child');
             $(tg[i]).attr('src',path);
             var non_active = $('.img-container img:last-child');
             var j = i+len;
             if( j>imgnamelist.length-1 ){ j = j-imgnamelist.length ;}
-            $(non_active[i]).attr('src',"./img/"+imgnamelist[j]);
+            $(non_active[i]).attr('src',imgnamelist[j]);
         }
-        var cl = new CycleLoader(imgnamelist,len);
-        setInterval(cl.imgCycle,interval);
+        cl = new CycleLoader(imgnamelist,len);
+        tmr = setInterval(cl.imgCycle,interval);
     });
 
     /**
@@ -64,19 +65,17 @@ $(document).ready(function(){
         this.getActiveDOM = function(){
             var active = $('.img-container img.active');
             var select = $(active[this.dom_pointer]);
-            console.log(select);
             return select;
         }.bind(this);
 
         this.getNonActiveDOM = function(){
             var non_active = $('.img-container > img:not(.active)');
             var select = $(non_active[this.dom_pointer]);
-            console.log(select);
             return select;
         }.bind(this);
 
         this.getPath = function(){
-            var path = "./img/"+this.imgnamelist[this.file_pointer];
+            var path = this.imgnamelist[this.file_pointer];
             this.file_pointer += 1;
             if(this.file_pointer > this.len){
                 this.file_pointer = 0;
@@ -97,4 +96,23 @@ $(document).ready(function(){
             if(this.dom_pointer > this.domlen-1){this.dom_pointer = 0;}
         }.bind(this);
     };
+
+    function getBingimages(){
+        var query = $('#query').val();
+        $.ajax({
+            url: './api/bingsearch.php',
+            type:'POST',
+            dataType: 'json',
+            data : {query:query},
+            timeout:10000,
+            success: function(data) {
+                cl.imgnamelist = data;
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+
+            }
+        });
+    };
+
+    $('#send').on('click',getBingimages);
 });
