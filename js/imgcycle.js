@@ -50,15 +50,15 @@ $(document).ready(function(){
     /**
      *  CycleLoader object for iterate file_pointer and dom_pointer
      * @param imgnamelist - Filename Array
-     * @param len - DOM length
+     * @param domlen - DOM length
      * @constructor
      */
-    var CycleLoader = function(imgnamelist,len){
+    var CycleLoader = function(imgnamelist,domlen){
 
         this.imgnamelist = imgnamelist;
         this.len = imgnamelist.length-1;
         this.file_pointer = 7;
-        this.domlen = len;
+        this.domlen = domlen;
         this.dom_pointer = 0;
         this.fadetime = 1000;
 
