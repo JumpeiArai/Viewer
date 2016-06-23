@@ -54,7 +54,7 @@ $(document).ready(function(){
         $(this).attr('src', cl.getPath());
     });
 
-        /**
+    /**
      *  CycleLoader object for iterate file_pointer and dom_pointer
      * @param imgnamelist - Filename Array
      * @param domlen - <img> DOM length
@@ -127,6 +127,10 @@ $(document).ready(function(){
             data : {query:query},
             timeout:10000,
             success: function(data) {
+                if(data == null){
+                    console.log("Unable to get Image");
+                    return;
+                }
                 cl.imgnamelist = data;
                 cl.file_pointer = 0;
                 cl.len = data.length;
