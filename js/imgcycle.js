@@ -48,6 +48,13 @@ $(document).ready(function(){
     });
 
     /**
+     * If Not found image loaded, Another image loading
+     */
+    $('.viewer-wrapper img').error(function() {
+        $(this).attr('src', cl.getPath());
+    });
+
+        /**
      *  CycleLoader object for iterate file_pointer and dom_pointer
      * @param imgnamelist - Filename Array
      * @param domlen - <img> DOM length
@@ -98,7 +105,6 @@ $(document).ready(function(){
         }.bind(this);
 
         this.updateDomUrl = function(){
-            console.log(this.imgnamelist);
             for(var i=0;i<this.domlen;i++){
                 var fc = $('.img-container img:first-child');
                 $(fc[i]).attr('src',this.imgnamelist[i]);
